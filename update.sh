@@ -95,7 +95,7 @@ update_cert_for_plex() {
     $SCP -P $PORT $LOCAL_CERT_DIR/$CERT_NAME.cer $USER@$HOST:/tmp/$CERT_NAME.cer
     $SCP -P $PORT $LOCAL_CERT_DIR/fullchain.cer $USER@$HOST:/tmp/$CERT_NAME.chain
     $SSH -p $PORT $USER@$HOST "openssl pkcs12 -export -inkey /tmp/$CERT_NAME.key -in /tmp/$CERT_NAME.cer -certfile /tmp/$CERT_NAME.chain -out /tmp/$CERT_NAME.p12 -name plex -password pass:temppass"
-    $SSH -p $PORT $USER@$HOST '"/var/packages/Plex Media Server/scripts/start-stop-status" restart'
+    $SSH root@$HOST '"/var/packages/Plex Media Server/scripts/start-stop-status" stop && "/var/packages/Plex Media Server/scripts/start-stop-status" start'
     echo -e "[$(date)] \033[32m== HTTPS certificate on $HOST is now renewed & updated! ==\033[0m"
 }
 
@@ -105,7 +105,7 @@ update_cert_for_plex() {
 #You can set custom SSH port or username,
 #Example: update_cert_for_routeros 10.0.0.11 1022 admin
 
-update_cert_for_dsm "your_dsm_host" 
+update_cert_for_dsm "your_dsm_host"
 
 update_cert_for_esxi "your_esxi_host"
 
