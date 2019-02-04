@@ -94,7 +94,7 @@ update_cert_for_plex() {
     $SCP -P $PORT $LOCAL_CERT_DIR/$CERT_NAME.key $USER@$HOST:/tmp/$CERT_NAME.key
     $SCP -P $PORT $LOCAL_CERT_DIR/$CERT_NAME.cer $USER@$HOST:/tmp/$CERT_NAME.cer
     $SCP -P $PORT $LOCAL_CERT_DIR/fullchain.cer $USER@$HOST:/tmp/$CERT_NAME.chain
-    $SSH -p $PORT $USER@$HOST "openssl pkcs12 -export -inkey /tmp/$CERT_NAME.key -in /tmp/$CERT_NAME.cer -certfile /tmp/$CERT_NAME.chain -out /tmp/$CERT_NAME.p12 -name plex -password pass:temppass"
+    $SSH -p $PORT $USER@$HOST "openssl pkcs12 -export -inkey /tmp/$CERT_NAME.key -in /tmp/$CERT_NAME.cer -certfile /tmp/$CERT_NAME.chain -out /etc/$CERT_NAME.p12 -name plex -password pass:temppass"
     $SSH root@$HOST '/usr/syno/sbin/synoservice --restart "pkgctl-Plex Media Server"'
     echo -e "[$(date)] \033[32m== HTTPS certificate on $HOST is now renewed & updated! ==\033[0m"
 }
